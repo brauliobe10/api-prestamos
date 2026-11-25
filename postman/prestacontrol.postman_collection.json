@@ -168,6 +168,19 @@
                   "  var data = pm.response.json();",
                   "  pm.expect(data).to.be.an('array').that.is.not.empty;",
                   "  pm.expect(data[0]).to.have.property('total');",
+                  "  var idNuevo = Number(pm.collectionVariables.get('prestamoId'));",
+                  "  var capitalBase = 0;",
+                  "  var totalBase = 0;",
+                  "  data.forEach(function (p) {",
+                  "    if (p.id !== idNuevo) {",
+                  "      capitalBase += Number(p.monto);",
+                  "      if (!p.pagado) {",
+                  "        totalBase += Number(p.total);",
+                  "      }",
+                  "    }",
+                  "  });",
+                  "  pm.collectionVariables.set('capitalBase', capitalBase);",
+                  "  pm.collectionVariables.set('totalBase', totalBase);",
                   "});"
                 ]
               }
@@ -216,8 +229,10 @@
                   "pm.test('200 y resumen', function () {",
                   "  pm.response.to.have.status(200);",
                   "  var data = pm.response.json();",
-                  "  pm.expect(data.capitalPrestado).to.eql(1000.00);",
-                  "  pm.expect(data.totalPorCobrar).to.eql(1100.00);",
+                  "  var capitalBase = Number(pm.collectionVariables.get('capitalBase'));",
+                  "  var totalBase = Number(pm.collectionVariables.get('totalBase'));",
+                  "  pm.expect(data.capitalPrestado).to.be.closeTo(capitalBase + 1000.00, 0.01);",
+                  "  pm.expect(data.totalPorCobrar).to.be.closeTo(totalBase + 1100.00, 0.01);",
                   "});"
                 ]
               }

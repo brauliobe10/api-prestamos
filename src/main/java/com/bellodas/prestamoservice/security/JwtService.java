@@ -30,7 +30,7 @@ public class JwtService {
                 .subject(email)
                 .issuedAt(Date.from(ahora))
                 .expiration(Date.from(ahora.plusMillis(properties.expirationMs())))
-                .signWith(key())
+                .signWith(key(), Jwts.SIG.HS256)
                 .compact();
     }
 

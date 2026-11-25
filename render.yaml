@@ -1,0 +1,23 @@
+databases:
+  - name: prestacontrol-db
+    databaseName: prestacontrol
+    user: prestacontrol
+    plan: free
+
+services:
+  - type: web
+    name: prestacontrol-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: DB_URL
+        sync: false
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_EXPIRATION_MS
+        value: "86400000"

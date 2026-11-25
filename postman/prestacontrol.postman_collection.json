@@ -17,12 +17,14 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('201 y token JWT', function () {",
-                  "  pm.response.to.have.status(201);",
-                  "  var data = pm.response.json();",
-                  "  pm.expect(data.token).to.be.a('string').and.not.empty;",
-                  "  pm.expect(data.tipo).to.eql('Bearer');",
-                  "  pm.collectionVariables.set('token', data.token);",
+                  "pm.test('201 o 409 (ya registrado) y token JWT', function () {",
+                  "  pm.expect([201, 409]).to.include(pm.response.code);",
+                  "  if (pm.response.code === 201) {",
+                  "    var data = pm.response.json();",
+                  "    pm.expect(data.token).to.be.a('string').and.not.empty;",
+                  "    pm.expect(data.tipo).to.eql('Bearer');",
+                  "    pm.collectionVariables.set('token', data.token);",
+                  "  }",
                   "});"
                 ]
               }
